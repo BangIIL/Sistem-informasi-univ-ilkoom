@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+
 
 class MatakuliahController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
-        //
+        $matakuliahs = Matakuliah::with('dosen', 'jurusan')->orderBy('nama')->paginate(10);
+        return view('matakuliah.index', ['matakuliahs' => $matakuliahs]);
     }
 
     /**
