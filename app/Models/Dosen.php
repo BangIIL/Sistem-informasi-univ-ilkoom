@@ -16,6 +16,6 @@ class Dosen extends Model
     }
 
     public function jurusan(): BelongsTo{
-        return $this->belongsTo('\App\Models\Jurusan');
+        return $this->belongsTo('App\Models\Jurusan');
     }
 }

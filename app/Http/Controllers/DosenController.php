@@ -37,9 +37,9 @@ class DosenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dosen $dosen)
+    public function show(Dosen $dosen): View
     {
-        //
+        return view('dosen.show',compact('dosen'));
     }
 
     /**
