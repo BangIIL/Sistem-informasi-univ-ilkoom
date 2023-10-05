@@ -30,15 +30,19 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Mahasiswa $mahasiswa)
+    public function show(Mahasiswa $mahasiswa) :View
     {
-        //
+        $matakuliahs = $mahasiswa->matakuliahs->sortBy('nama');
+        return view('mahasiswa.show',[
+            'mahasiswa' => $mahasiswa,
+            'matakuliahs' => $matakuliahs,
+        ]);
     }
 
     /**
