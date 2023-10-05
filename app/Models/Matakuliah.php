@@ -21,7 +21,7 @@ class Matakuliah extends Model
         return $this->belongsTo('App\Models\Dosen');
     }
 
-    public function mahasiswas(): BelongsTo{
+    public function mahasiswas(): BelongsToMany{
         return $this->belongsToMany('App\Models\Mahasiswa')->withTimestamps();
     }
 }

@@ -19,9 +19,7 @@ use App\Http\Controllers\MatakuliahController;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.app');
-});
+Route::get('/',[JurusanController::class, 'index']);
 
 Route::resource('jurusans', JurusanController::class);
 Route::get('jurusan-dosen/{jurusan_id}', [JurusanController::class,

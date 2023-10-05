@@ -37,9 +37,13 @@ class MatakuliahController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Matakuliah $matakuliah)
+    public function show(Matakuliah $matakuliah): View
     {
-        //
+        $mahasiswas = $matakuliah->mahasiswas->sortBy('nama');
+        return view('matakuliah.show',[
+            'matakuliah' => $matakuliah,
+            'mahasiswas' => $mahasiswas,
+        ]);
     }
 
     /**
