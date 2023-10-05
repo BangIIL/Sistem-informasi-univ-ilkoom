@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use App\Models\Dosen;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -25,6 +26,17 @@ class JurusanController extends Controller
 
         return view('dosen.index',[
             'dosens' => $dosens,
+            'nama_jurusan' => $nama_jurusan,
+        ]);
+    }
+
+    public function jurusanMahasiswa($jurusan_id): View
+    {
+        $mahasiswas = Mahasiswa::where('jurusan_id', $jurusan_id)->orderBy('nama')->paginate(5);
+        $nama_jurusan = Jurusan::find($jurusan_id)->nama;
+
+        return view('mahasiswa.index',[
+            'mahasiswas' => $mahasiswas,
             'nama_jurusan' => $nama_jurusan,
         ]);
     }
