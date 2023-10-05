@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,6 +16,17 @@ class JurusanController extends Controller
     {
         $jurusans = Jurusan::withCount('mahasiswas')->orderBy('nama')->get();
         return view('jurusan.index', ['jurusans' => $jurusans]);
+    }
+
+    public function jurusanDosen($jurusan_id): View
+    {
+        $dosens = Dosen::where('jurusan_id', $jurusan_id)->orderBy('nama')->paginate(5);
+        $nama_jurusan = Jurusan::find($jurusan_id)->nama;
+
+        return view('dosen.index',[
+            'dosens' => $dosens,
+            'nama_jurusan' => $nama_jurusan,
+        ]);
     }
 
     /**

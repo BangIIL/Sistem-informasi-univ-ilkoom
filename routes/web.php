@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::resource('jurusans', JurusanController::class);
 Route::get('jurusan-dosen/{jurusan_id}', [JurusanController::class,
             'jurusanDosen'])->name('jurusan-dosen');
-            Route::get('jurusan-mahasiswa/{jurusan_id}', [JurusanController::class,
+Route::get('jurusan-mahasiswa/{jurusan_id}', [JurusanController::class,
             'jurusanMahasiswa'])->name('jurusan-mahasiswa');
 Route::resource('dosens', DosenController::class);
 Route::resource('mahasiswas', MahasiswaController::class);
