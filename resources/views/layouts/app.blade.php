@@ -170,5 +170,6 @@ bg-white py-3">
         </div>
     </div>
 </footer>
+@include('sweetalert::alert')
 </body>
 </html>
