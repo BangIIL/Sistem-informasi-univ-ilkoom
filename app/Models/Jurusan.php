@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Jurusan extends Model
 {
     use HasFactory;
+    protected $fillable = ['nama','kepala_jurusan','daya_tampung'];
 
     public function dosens(): HasMany{
         return $this->hasMany('App\Models\Dosen');

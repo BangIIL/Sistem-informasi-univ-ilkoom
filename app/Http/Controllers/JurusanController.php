@@ -7,6 +7,8 @@ use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Http\RedirectResponse;
 
 class JurusanController extends Controller
 {
@@ -44,17 +46,24 @@ class JurusanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('jurusan.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validateData = $request->validate([
+            'nama' => 'required',
+            'kepala_jurusan' => 'required',
+            'daya_tampung' => 'required|min:10|integer',
+        ]);
+        $jurusan = Jurusan::create($validateData);
+        Alert::success('Berhasil', "Jurusan $request->nama berhasil dibuat");
+        return redirect("/jurusans#card-{$jurusan->id}");
     }
 
     /**

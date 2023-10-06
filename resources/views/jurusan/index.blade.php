@@ -3,11 +3,18 @@
 @section('content')
 <h1 class="display-4 text-center my-5">Sistem Informasi Universitas ILKOOM</h1>
 
+<div class="text-end pt-5 pb-4">
+    @auth
+        <a href="{{ route('jurusans.create') }}" class="btn btn-info">
+            Tambah Juruasan</a>
+    @endauth
+</div>
+
 <div class="row row-cols-1 rows-cols-md-2 row-cols-xl-3 g-4">
     @foreach ($jurusans as $jurusan )
 
 
-    <div class="col">
+    <div class="col" id= card- {{ $jurusan->id }}>
         <div class="card h-100">
             <div class="card-body text-center">
                 <h3 class="card-title py-1">{{ $jurusan->nama }}</h3>
