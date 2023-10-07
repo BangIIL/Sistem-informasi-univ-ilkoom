@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Mahasiswa extends Model
 {
     use HasFactory;
+    protected $fillable = ['nim','nama','jurusan_id'];
 
     public function jurusan(): BelongsTo{
         return $this->belongsTo('App\Models\Jurusan');
