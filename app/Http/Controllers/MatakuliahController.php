@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matakuliah;
+use App\Models\Jurusan;
+Use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class MatakuliahController extends Controller
@@ -21,17 +25,33 @@ class MatakuliahController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        $dosens = Dosen::orderBy('nama')->get();
+        return view('matakuliah.create', [
+            'jurusans' => $jurusans,
+            'dosens' => $dosens,
+        ]);
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validateData = $request->validate([
+            'kode' => 'required|alpha_num|size:5|unique:matakuliahs,kode',
+            'nama' => 'required',
+            'dosen_id' => 'required|exists:App\Models\Dosen,id',
+            'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
+            'jumlah_sks' => 'required|digits_between:1,6',
+        ]);
+
+        Matakuliah::create($validateData);
+        Alert::success('Berhasil', "Mata Kuliah $request->nama berhasil dibuat");
+        return redirect($request->url_asal);
     }
 
     /**

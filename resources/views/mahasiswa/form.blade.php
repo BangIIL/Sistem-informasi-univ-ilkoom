@@ -54,7 +54,7 @@
 @isset($mahasiswa)
     <input type="hidden" name="url_asal" value="{{ old('url_asal') ?? url()->previous().'#row-'.$mahasiswa->id}}">
 @else
-    <input type="hidden" name="url_asal" value="{{ old('url_asal') ?? url()->previous() }}">
+    <input type="hidden" name="url_asal" value="{{ old('url_asal') ?? url()->previous()}}">
 @endisset
 
 <div class="row">
