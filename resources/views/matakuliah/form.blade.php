@@ -82,7 +82,6 @@
             @enderror
         </div>
     @endif
-
 </div>
 
 <div class="row mb-3">
