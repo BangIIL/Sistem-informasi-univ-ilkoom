@@ -28,6 +28,10 @@ Route::get('jurusan-mahasiswa/{jurusan_id}', [JurusanController::class,'jurusanM
 Route::resource('dosens', DosenController::class);
 
 Route::resource('mahasiswas', MahasiswaController::class);
+Route::get('/mahasiswas/ambil-matakuliah/{mahasiswa}',[MahasiswaController::class,'ambilMatakuliah'])->name('ambil-matakuliah');
+Route::post('/mahasiswas/ambil-matakuliah/{mahasiswa}',[MahasiswaController::class,'prosesAmbilMatakuliah'])->name('proses-ambil-matakuliah');
+
+
 Route::resource('matakuliahs', MatakuliahController::class);
 Route::get('buat-matakuliah/{dosen}',[MatakuliahController::class, 'buatMataKuliah'])->name('buat-matakuliah');
 
