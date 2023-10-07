@@ -22,14 +22,15 @@ use App\Http\Controllers\MatakuliahController;
 Route::get('/',[JurusanController::class, 'index']);
 
 Route::resource('jurusans', JurusanController::class);
-Route::get('jurusan-dosen/{jurusan_id}', [JurusanController::class,
-            'jurusanDosen'])->name('jurusan-dosen');
-Route::get('jurusan-mahasiswa/{jurusan_id}', [JurusanController::class,
-            'jurusanMahasiswa'])->name('jurusan-mahasiswa');
+Route::get('jurusan-dosen/{jurusan_id}', [JurusanController::class,'jurusanDosen'])->name('jurusan-dosen');
+Route::get('jurusan-mahasiswa/{jurusan_id}', [JurusanController::class,'jurusanMahasiswa'])->name('jurusan-mahasiswa');
+
 Route::resource('dosens', DosenController::class);
+
 Route::resource('mahasiswas', MahasiswaController::class);
 Route::resource('matakuliahs', MatakuliahController::class);
+Route::get('buat-matakuliah/{dosen}',[MatakuliahController::class, 'buatMataKuliah'])->name('buat-matakuliah');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::redirect('/home', '/');

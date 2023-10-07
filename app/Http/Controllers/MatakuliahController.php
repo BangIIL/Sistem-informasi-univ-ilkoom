@@ -36,6 +36,15 @@ class MatakuliahController extends Controller
 
     }
 
+    public function buatMatakuliah(Dosen $dosen):View
+    {
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('matakuliah.create', [
+            'jurusans' => $jurusans,
+            'dosen' => $dosen,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

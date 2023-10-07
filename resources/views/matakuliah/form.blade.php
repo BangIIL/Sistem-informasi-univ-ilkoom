@@ -52,24 +52,37 @@
 
 <div class="row mb-3">
     <label for="dosen_id" class="col-md-3 col-form-label text-md-end">
-        Dosen
+        Dosen Pengajar
     </label>
-    <div class="col-md-4">
-        <select name="dosen_id" id="dosen_id" class="form-select @error('dosen_id') is-invalid @enderror">
-            @foreach ($dosens as  $dosen)
-                @if ($dosen->id ==(old('dosen_id') ?? $matakuliah->dosen_id ?? ''))
-                <option value="{{ $dosen->id }}" selected>{{ $dosen->nama }}</option>
-                @else
-                <option value="{{ $dosen->id }}">{{ $dosen->nama }}</option>
-                @endif
-            @endforeach
-        </select>
-        @error('dosen_id')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
+
+    {{-- Pemeriksaan kondisi agar pilihan dosen tidak bisa diubah, Ini akan aktif jika form diakses dari dosens.show / halaman biodata --}}
+
+    @if (@isset($dosen))
+        <div class="col-md-4 d-flex align-items-center">
+            <div>{{ $dosen->nama }}</div>
+        </div>
+        {{-- Kirim id dosen ke form awal agar tidak bermasalah dengan validasi --}}
+        <input type="hidden" name="dosen_id" id="dosen_id" value="{{$dosen->id}}">
+    @else
+        {{-- Ini aktif jika form diakses dari dosens.index / halaman index --}}
+        <div class="col-md-4">
+            <select name="dosen_id" id="dosen_id" class="form-select @error('dosen_id') is-invalid @enderror">
+                @foreach ($dosens as  $dosen)
+                    @if ($dosen->id ==(old('dosen_id') ?? $matakuliah->dosen_id ?? ''))
+                    <option value="{{ $dosen->id }}" selected>{{ $dosen->nama }}</option>
+                    @else
+                    <option value="{{ $dosen->id }}">{{ $dosen->nama }}</option>
+                    @endif
+                @endforeach
+            </select>
+            @error('dosen_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+    @endif
+
 </div>
 
 <div class="row mb-3">
