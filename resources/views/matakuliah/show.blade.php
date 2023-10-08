@@ -31,4 +31,10 @@
     @endforeach
 </ol>
 
+@auth
+    <a href="{{ route('daftarkan-mahasiswa',['matakuliah' => $matakuliah->id]) }}" class="btn btn-info" title="Daftrakan Mahasiswa">
+        Daftarkan Mahasiswa
+    </a>
+@endauth
+
 @endsection

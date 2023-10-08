@@ -34,6 +34,8 @@ Route::post('/mahasiswas/ambil-matakuliah/{mahasiswa}',[MahasiswaController::cla
 
 Route::resource('matakuliahs', MatakuliahController::class);
 Route::get('buat-matakuliah/{dosen}',[MatakuliahController::class, 'buatMataKuliah'])->name('buat-matakuliah');
+Route::get('/matakuliahs/daftarkan-mahasiswa/{matakuliah}',[MatakuliahController::class,'daftarkanMahasiswa'])->name('daftarkan-mahasiswa');
+Route::post('/matakuliahs/daftarkan-mahasiswa/{matakuliah}',[MatakuliahController::class,'prosesDaftarkanMahasiswa'])->name('proses-daftarkan-mahasiswa');
 
 Auth::routes();
 

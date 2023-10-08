@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Matakuliah;
 use App\Models\Jurusan;
 Use App\Models\Dosen;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -45,6 +46,23 @@ class MatakuliahController extends Controller
         ]);
     }
 
+    public function daftarkanMahasiswa(Matakuliah $matakuliah): View
+    {
+        // Ambil semua daftar mahasiswa dari jurusan yang sama dengan matakuliah
+        $mahasiswas = Mahasiswa::where('jurusan_id', $matakuliah->jurusan_id)->orderBy('nama')->get();
+
+        // Buat array dari daftar mahasiswa yang sudah terdaftar sebelumnya
+        // Ini akan dipakai untuk proses repopulate form
+        $mahasiswas_sudah_terdaftar = $matakuliah->mahasiswas->pluck('id')->all();
+
+        return view('matakuliah.daftarkan-mahasiswa',
+        [
+            'matakuliah' => $matakuliah,
+            'mahasiswas' => $mahasiswas,
+            'mahasiswas_sudah_terdaftar' => $mahasiswas_sudah_terdaftar,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -61,6 +79,21 @@ class MatakuliahController extends Controller
         Matakuliah::create($validateData);
         Alert::success('Berhasil', "Mata Kuliah $request->nama berhasil dibuat");
         return redirect($request->url_asal);
+    }
+
+    public function prosesDaftarkanMahasiswa(Request $request, Matakuliah $matakuliah): RedirectResponse
+    {
+        // Ambil semua id mahasiswa untuk jurusan yang sama dengan mata kuliah.
+        $mahasiswa_jurusan=Mahasiswa::where('jurusan_id',$matakuliah->jurusan_id)->pluck('id')->toArray();
+
+        $validateData = $request->validate([
+            'mahasiswa.*' => 'distinct|in:'.implode(',',$mahasiswa_jurusan),
+        ]);
+
+        // Proses mahasiswa yang didaftarkan
+        $matakuliah->mahasiswas()->sync($validateData['mahasiswa'] ?? []);
+        Alert::success('Berhasil', "Terdapat ".count($validateData['mahasiswa'] ?? [])." mahasiswa yang mengambil $matakuliah->nama");
+        return redirect(route('matakuliahs.show',['matakuliah' => $matakuliah->id]));
     }
 
     /**
