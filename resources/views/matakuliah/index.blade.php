@@ -22,6 +22,9 @@
             <th>Dosen Pengajar</th>
             <th>Jumlah SKS</th>
             <th>Jurusan</th>
+            @auth
+            <th>Action</th>
+            @endauth
         </tr>
     </thead>
     <tbody>
@@ -40,6 +43,11 @@
             </td>
             <td>{{ $matakuliah->jumlah_sks }}</td>
             <td>{{ $matakuliah->jurusan->nama }}</td>
+            @auth
+            <td>
+                <a href="{{ route('matakuliahs.edit', ['matakuliah' => $matakuliah->id]) }}" class="btn btn-secondary" title="Edit Mata Kuliah">Edit</a>
+            </td>
+            @endauth
         </tr>
         @endforeach
     </tbody>

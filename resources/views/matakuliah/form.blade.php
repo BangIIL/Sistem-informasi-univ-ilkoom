@@ -32,6 +32,17 @@
     <label for="jurusan_id" class="col-md-3 col-form-label text-md-end">
         Jurusan
     </label>
+    {{-- jurusan tidak bisa diubah jika ada mata kuliah yang sudah diambil --}}
+    @if (($tombol=='Update') AND ($matakuliah->mahasiswas->count() > 0))
+        <div class="col-md-9 d-flex align-items-center">
+            <div>{{ $matakuliah->jurusan->nama }}
+                <small><i>(tidak bisa di ubah karena sudah diambil {{ $matakuliah->mahasiswas->count() }} mahasiswa)</i></small>
+            </div>
+        </div>
+        {{-- Kirim nilai jurusan awal agar tidak bermasalah dengan validasi --}}
+        <input type="hidden" name="jurusan_id" id="jurusan_id" value="{{ $matakuliah->jurusan_id }}">
+    @else
+    {{-- Untuk form create atau mahasiswa belum mengambil matakuliah --}}
     <div class="col-md-4">
         <select name="jurusan_id" id="jurusan_id" class="form-select @error('jurusan_id') is-invalid @enderror">
             @foreach ($jurusans as  $jurusan)
@@ -48,6 +59,8 @@
             </span>
         @enderror
     </div>
+    @endif
+
 </div>
 
 <div class="row mb-3">
