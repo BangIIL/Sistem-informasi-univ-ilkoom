@@ -18,6 +18,9 @@
             <th>NID</th>
             <th>Nama Dosen</th>
             <th>Jurusan Dosen</th>
+            @auth
+                <th>Action</th>
+            @endauth
         </tr>
     </thead>
     <tbody>
@@ -30,6 +33,11 @@
                         {{ $dosen->nama }}</a>
                 </td>
                 <td>{{ $dosen->jurusan->nama }}</td>
+                @auth
+                <td>
+                    <a href="{{ route('dosens.edit',['dosen' => $dosen->id]) }}" class=" btn btn-secondary" title="Edit Dosen">Edit</a>
+                </td>
+                @endauth
             </tr>
         @endforeach
     </tbody>
