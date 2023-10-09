@@ -101,8 +101,10 @@ class JurusanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jurusan $jurusan)
+    public function destroy(Jurusan $jurusan): RedirectResponse
     {
-        //
+        $jurusan->delete();
+        Alert::success('Berhasil',"Jurusan $jurusan->nama telah di hapus");
+        return redirect("/jurusans");
     }
 }

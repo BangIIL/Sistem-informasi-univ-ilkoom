@@ -15,12 +15,18 @@
 
     <div class="col" id= card- {{ $jurusan->id }}>
         <div class="card h-100">
-
             @auth
-                <div class="btn-grouop btn-action">
+                <div class="btn-group btn-action">
                     <a href="{{ route('jurusans.edit', ['jurusan'=> $jurusan->id]) }}" class="btn btn-primary d-inline-block" title="Edit Jurusan">
                         <i class="fa fa-edit fa-fw"></i>
                     </a>
+                    <form action="{{ route('jurusans.destroy',['jurusan' => $jurusan->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger shadow-none btn-hapus" title="Hapus Jurusan" data-name="{{ $jurusan->nama }}" data-table="jurusan">
+                            <i class="fa fa-trash fa-fw"></i>
+                        </button>
+                    </form>
                 </div>
             @endauth
             <div class="card-body text-center">
