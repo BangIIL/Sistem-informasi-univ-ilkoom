@@ -19,11 +19,14 @@
                 <th>NIM</th>
                 <th>Nama Mahasiswa</th>
                 <th>Jurusan Mahasiswa</th>
+                @auth
+                <th>Action</th>
+                @endauth
             </tr>
         </thead>
         <tbody>
             @foreach ($mahasiswas as $mahasiswa )
-                <tr>
+                <tr id="row-{{ $mahasiswa->id }}">
                     <th>{{ $mahasiswas->firstItem() + $loop->iteration -1 }}</th>
                     <td>{{ $mahasiswa->nim }}</td>
                     <td>
@@ -31,6 +34,11 @@
                             {{ $mahasiswa->nama }}</a>
                     </td>
                     <td>{{ $mahasiswa->jurusan->nama }}</td>
+                    @auth
+                    <td>
+                        <a href="{{ route('mahasiswas.edit', ['mahasiswa' => $mahasiswa->id]) }}" class="btn btn-secondary" title="Edit Mahasiswa">Edit</a>
+                    </td>
+                    @endauth
                 </tr>
             @endforeach
         </tbody>

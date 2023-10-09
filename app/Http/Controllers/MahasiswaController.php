@@ -98,17 +98,36 @@ class MahasiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mahasiswa $mahasiswa)
+    public function edit(Mahasiswa $mahasiswa): View
     {
-        //
+        $jurusans = Jurusan::orderBy('nama')->get();
+        return view('mahasiswa.edit', [
+            'mahasiswa' => $mahasiswa,
+            'jurusans' => $jurusans,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mahasiswa $mahasiswa)
+    public function update(Request $request, Mahasiswa $mahasiswa):RedirectResponse
     {
-        //
+        $validateData = $request->validate([
+            'nim' => 'required|alpha_num|size:8|unique:mahasiswas,nim,' .$mahasiswa->id,
+            'nama' => 'required',
+            'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
+        ]);
+
+        // Antipasi jika ada yang edit inputan jurusan_id yang sudah di hidden
+        if (($mahasiswa->matakuliahs()->count() >0) AND ($mahasiswa->jurusan_id != $request->jurusan_id)) {
+            Alert::error('Update gagal', "Jurusan tidak bisa diubah!");
+            return back()->withInput();
+        }
+
+        $mahasiswa->update($validateData);
+        Alert::success('Berhasil', "Mahasiswa $request->nama telah di update");
+        // Trik agar halaman kembali ke halaman asal
+        return redirect($request->url_asal);
     }
 
     /**
