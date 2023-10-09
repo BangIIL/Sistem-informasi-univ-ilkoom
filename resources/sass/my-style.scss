@@ -44,6 +44,10 @@ tr:target{
 .card .btn-action{
     opacity: 0;
 }
+
+.card:hover .btn-action{
+    opacity:0.7;
+}
 .card .btn-action:hover{
     opacity: 0.7;
 }

@@ -13,9 +13,16 @@
 <div class="row row-cols-1 rows-cols-md-2 row-cols-xl-3 g-4">
     @foreach ($jurusans as $jurusan )
 
-
     <div class="col" id= card- {{ $jurusan->id }}>
         <div class="card h-100">
+
+            @auth
+                <div class="btn-grouop btn-action">
+                    <a href="{{ route('jurusans.edit', ['jurusan'=> $jurusan->id]) }}" class="btn btn-primary d-inline-block" title="Edit Jurusan">
+                        <i class="fa fa-edit fa-fw"></i>
+                    </a>
+                </div>
+            @endauth
             <div class="card-body text-center">
                 <h3 class="card-title py-1">{{ $jurusan->nama }}</h3>
                 <hr>

@@ -77,17 +77,25 @@ class JurusanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jurusan $jurusan)
+    public function edit(Jurusan $jurusan): View
     {
-        //
+        return view('jurusan.edit', compact('jurusan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jurusan $jurusan)
+    public function update(Request $request, Jurusan $jurusan): RedirectResponse
     {
-        //
+        $validateData = $request->validate([
+            'nama' => 'required',
+            'kepala_jurusan' => 'required',
+            'daya_tampung' => 'required|min:10|integer',
+        ]);
+
+        $jurusan->update($validateData);
+        Alert::success('Berhasil', "Jurusan $request->nama telah di update");
+        return redirect("/jurusans#card-{$jurusan->id}");
     }
 
     /**
