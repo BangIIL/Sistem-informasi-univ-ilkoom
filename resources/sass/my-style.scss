@@ -1,4 +1,4 @@
-/* Untuk mengatur lebar tabel di halam pencarian */
+/*  Untuk mengatur lebar tabel di halaman pencarian  */
 .w-auto td,
 .w-auto th {
     white-space: nowrap;
@@ -9,7 +9,7 @@
     padding-right: 25px;
 }
 
-/* Membuat efek ketika di target (menandai hsil edit) */
+/*  Membuat efek ketika di target (menandai hasil edit)  */
 .col:target .card{
     box-shadow: 0px 0px 6px;
 }
@@ -17,7 +17,8 @@ tr:target{
     background-color: lightyellow !important;
 }
 
-/* Style untuk navbar */
+
+/*  Style untuk navbar  */
 #main-navbar .nav-link{
     color: #212529;
     text-transform: uppercase;
@@ -28,64 +29,61 @@ tr:target{
 #main-navbar .container {
     border-bottom: 2px solid black;
 }
-.main-logo{
+.main-logo {
     height: 70px;
 }
-.small-logo{
-    height: 60px; /* Untuk logo kecil di footer */
+.small-logo {
+    height: 60px;   /* Untuk logo kecil di footer */
 }
 
-/* Untuk membuat button hover di halaman jurusan (card) */
-.card .btn-action{
+
+/*  Untuk membuat button hover di halaman jurusan (card)  */
+.card .btn-action {
     position: absolute;
     top: 10px;
     right: 10px;
 }
-.card .btn-action{
+.card .btn-action {
     opacity: 0;
 }
-
-.card:hover .btn-action{
-    opacity:0.7;
-}
-.card .btn-action:hover{
+.card:hover .btn-action {
     opacity: 0.7;
 }
-.card .btn-action:hover{
+.card .btn-action:hover {
     opacity: 1.0 !important;
 }
-.card .btn-hapus{
-    border-top-left-radius:0 ;
+.card .btn-hapus {
+    border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     margin-left: -1px;
 }
 
-/* Media query agar tombol selalu tampil di layar kecil */
-@media (max-width: 700px){
-    .btn-action{
-        opacity: 0.7;
-    }
+/*  Media query agar tombol selalu tampil di layar kecil  */
+@media (max-width: 700px) {
+  .btn-action {
+      opacity: 0.7;
+  }
 }
-@media(hover: none){
-    .btn-action{
-        opacity: 0.7;
-    }
+@media (hover: none) {
+  .btn-action {
+      opacity: 0.7;
+  }
 }
 
-/* Mengubah warna button bawaan Bootstrap */
-.btn-info, btn-primary, .btn-secondary,
-.btn-info:focus, .btn-primary:focus, .btn-secondary:focus{
+/*  Mengubah warna button bawaan Bootstrap  */
+.btn-info, .btn-primary, .btn-secondary,
+.btn-info:focus, .btn-primary:focus, .btn-secondary:focus {
     background-color: #1f3f7a;
     border-color: #1f3f7a;
-    color: white;
+    color:white;
 }
-.btn-info:hover, .btn-primary:hover, .btn-secondary:hover{
+.btn-info:hover, .btn-primary:hover, .btn-secondary:hover {
     background-color: #0a2351;
     border-color: #0a2351;
-    color: white;
+    color:white;
 }
-.btn-info:focus, .btn-primary:focus, .btn-secondary:focus{
-    box-shadow: 0 0 0 0.2rem rgba(31, 63, 112, 0.5) !important;
+.btn-info:focus, .btn-primary:focus, .btn-secondary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(31, 63, 122, 0.5) !important;
 }
 .btn-info:active,.btn-primary:active, .btn-info:active {
     background-color: #0a2351 !important;
@@ -105,29 +103,28 @@ tr:target{
     background-color: #b99737 !important;
 }
 
- /* Menukar warna ketika di select */
+/*  Menukar warna ketika di select  */
 ::selection {
     background: #0a2351;
     color: white;
 }
 
-/* Menghapus underscore link di tabel dan konten utama */
-    table td a, small a{
+/*  Menghapus underscore untuk link di tabel */
+table td a{
     text-decoration: none;
 }
 
-/* Memperbesar padding sel tabel */
-    .table td, .table th {
+/*  Memperbesar padding sel tabel */
+.table td, .table th {
     padding: 0.75rem;
-    vertical-align: middle;
 }
 
-/* Mengatur posisi teks tabel agar ditengah secara vertikal */
+/*  Mengatur posisi teks tabel agar ditengah secara vertikal */
 thead, tbody, tfoot, tr, td, th {
     vertical-align: baseline;
 }
 
-/* Style untuk footer */
+/*  Style untuk footer  */
 #main-footer {
     background-color: #172c53 !important;
 }
@@ -137,16 +134,17 @@ thead, tbody, tfoot, tr, td, th {
 }
 
 #main-footer a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #main-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /*-- Nonaktifkan XXL Breakpoint (opsional) --*/
+
 @media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
-    }
+  .container {
+      max-width: 1140px;
+  }
 }

@@ -85,8 +85,10 @@ class DosenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dosen $dosen)
+    public function destroy(Dosen $dosen): RedirectResponse
     {
-        //
+        $dosen->delete();
+        Alert::success('Berhasil', "Dosen $dosen->nama telah dihapus");
+        return redirect ("/dosens");
     }
 }
