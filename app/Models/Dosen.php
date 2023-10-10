@@ -10,13 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Dosen extends Model
 {
     use HasFactory;
-    protected $fillable = ['nid', 'nama', 'jurusan_id'];
+    protected $fillable = ['nid','nama','jurusan_id'];
 
-    public function matakuliahs(): HasMany{
+    public function matakuliahs(): HasMany
+    {
         return $this->hasMany('App\Models\Matakuliah');
     }
 
-    public function jurusan(): BelongsTo{
+    public function jurusan(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Jurusan');
     }
 }

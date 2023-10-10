@@ -12,37 +12,28 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
 {
+    // Untuk membatasi hak akses
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(): View
     {
         $mahasiswas = Mahasiswa::with('jurusan')->orderBy('nama')->paginate(10);
-        return view('mahasiswa.index', ['mahasiswas' => $mahasiswas]);
+        return view('mahasiswa.index',['mahasiswas' => $mahasiswas]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $jurusans = Jurusan::orderBy('nama')->get();
         return view('mahasiswa.create',compact('jurusans'));
-    }
-
-    public function ambilMataKuliah(Mahasiswa $mahasiswa): View
-    {
-        // Ambil semua daftar mata kuliah dari jurusan yang sama dengan mahasiswa
-        $matakuliahs = Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)->orderBy('nama')->get();
-        // Buat array dari daftar jurusan yang sudah di ambil mahasiswa
-        // Ini akan dipakai untuk proses repopulate form
-        $matakuliahs_sudah_diambil=$mahasiswa->matakuliahs->pluck('id')->all();
-
-        return view('mahasiswa.ambil-matakuliah',[
-            'mahasiswa' => $mahasiswa,
-            'matakuliahs' => $matakuliahs,
-            'matakuliahs_sudah_diambil' => $matakuliahs_sudah_diambil,
-        ]);
     }
 
     /**
@@ -56,37 +47,26 @@ class MahasiswaController extends Controller
             'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
         ]);
 
-        // Cek apakah daya tampung jurusan masih belum penug
+        // Cek apakah daya tampung jurusan masih belum penuh
+        $total_mahasiswa = Mahasiswa::where('jurusan_id',$request->jurusan_id)
+                           ->count();
         $daya_tampung = Jurusan::find($request->jurusan_id)->daya_tampung;
-        $total_mahasiswa = Mahasiswa::where('jurusan_id', $request->jurusan_id)->count();
-
-        if($total_mahasiswa >= $daya_tampung){
-            Alert::error('Pendaftaran Gagal', 'Sudah melebihi daya tampung jurusan');
+        if ($total_mahasiswa >= $daya_tampung){
+            Alert::error('Pendaftaran Gagal',
+                         'Sudah melebihi daya tampung jurusan');
             return back()->withInput();
         }
 
         Mahasiswa::create($validateData);
-        ALert::success('Berhasil', "Mahasiswa $request->nama berhasil dibuat");
+        Alert::success('Berhasil', "Mahasiswa $request->nama berhasil dibuat");
+        // Trik agar halaman kembali ke asal
         return redirect($request->url_asal);
-    }
-
-    public function prosesAmbilMatakuliah(Request $request, Mahasiswa $mahasiswa)
-    {
-        // Ambil semua id matakuliah untuk jurusan yang sama dengan mahasiswa.
-        $matakuliah_jurusan=Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)->pluck('id')->toArray();
-
-        $validateData = $request->validate(['matakuliah.*' => 'distinct|in:'.implode(',',$matakuliah_jurusan),]);
-
-        // Input ke database
-        $mahasiswa->matakuliahs()->sync($validateData['matakuliah'] ?? []);
-        Alert::success('Berhasil', "Terdapat ".count($validateData['matakuliah'] ?? [])." mata kuliah yang diambil $mahasiswa->nama");
-        return redirect(route('mahasiswas.show',['mahasiswa' => $mahasiswa->id]));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Mahasiswa $mahasiswa) :View
+    public function show(Mahasiswa $mahasiswa): View
     {
         $matakuliahs = $mahasiswa->matakuliahs->sortBy('nama');
         return view('mahasiswa.show',[
@@ -110,19 +90,21 @@ class MahasiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mahasiswa $mahasiswa):RedirectResponse
+    public function update(Request $request, Mahasiswa $mahasiswa): RedirectResponse
     {
         $validateData = $request->validate([
-            'nim' => 'required|alpha_num|size:8|unique:mahasiswas,nim,' .$mahasiswa->id,
+            'nim' => 'required|alpha_num|size:8|unique:mahasiswas,nim,
+                     '.$mahasiswa->id,
             'nama' => 'required',
             'jurusan_id' => 'required|exists:App\Models\Jurusan,id',
         ]);
 
-        // Antipasi jika ada yang edit inputan jurusan_id yang sudah di hidden
-        if (($mahasiswa->matakuliahs()->count() >0) AND ($mahasiswa->jurusan_id != $request->jurusan_id)) {
-            Alert::error('Update gagal', "Jurusan tidak bisa diubah!");
+        // Antisipasi jika ada yang edit inputan jurusan_id yang sudah di hidden
+        if (($mahasiswa->matakuliahs()->count() > 0) AND
+            ($mahasiswa->jurusan_id != $request->jurusan_id) ) {
+            Alert::error('Update gagal',"Jurusan tidak bisa diubah!");
             return back()->withInput();
-        }
+          }
 
         $mahasiswa->update($validateData);
         Alert::success('Berhasil', "Mahasiswa $request->nama telah di update");
@@ -133,8 +115,53 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mahasiswa $mahasiswa)
+    public function destroy(Mahasiswa $mahasiswa): RedirectResponse
     {
-        //
+        $mahasiswa->delete();
+        Alert::success('Berhasil', "Mahasiswa $mahasiswa->nama telah di hapus");
+        return redirect("/mahasiswas");
+    }
+
+    public function ambilMatakuliah(Mahasiswa $mahasiswa): View
+    {
+      // Ambil semua daftar mata kuliah dari jurusan yang sama dengan mahasiswa
+      $matakuliahs = Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)
+                   ->orderBy('nama')->get();
+
+      // Buat array dari daftar jurusan yang sudah di ambil mahasiswa
+      // Ini akan dipakai untuk proses repopulate form
+      $matakuliahs_sudah_diambil=$mahasiswa->matakuliahs->pluck('id')->all();
+
+      return view('mahasiswa.ambil-matakuliah',
+      [
+        'mahasiswa' => $mahasiswa,
+        'matakuliahs' => $matakuliahs,
+        'matakuliahs_sudah_diambil' => $matakuliahs_sudah_diambil,
+      ]);
+    }
+
+    public function prosesAmbilMatakuliah(Request $request, Mahasiswa $mahasiswa): RedirectResponse
+    {
+      // dd($request->matakuliah);
+
+      // Ambil semua id matakuliah untuk jurusan yang sama dengan mahasiswa.
+      // Ini dipakai untuk proses validasi agar mata kuliah beda jurusan tidak
+      // bisa diambil.
+      $matakuliah_jurusan=Matakuliah::where('jurusan_id',$mahasiswa->jurusan_id)
+                        ->pluck('id')->toArray();
+
+      $validateData = $request->validate([
+          'matakuliah.*' => 'distinct|in:'.implode(',',$matakuliah_jurusan),
+      ]);
+
+      // Proses mata kuliah yang di ambil mahasiswa
+      $mahasiswa->matakuliahs()->sync($validateData['matakuliah'] ?? []);
+
+      Alert::success('Berhasil', "Terdapat ".
+                     count($validateData['matakuliah'] ?? []).
+                     " mata kuliah yang diambil $mahasiswa->nama");
+
+      return redirect(route('mahasiswas.show',
+                     ['mahasiswa' => $mahasiswa->id]));
     }
 }

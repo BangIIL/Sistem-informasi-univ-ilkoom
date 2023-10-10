@@ -2,13 +2,14 @@
 @section('content')
 
 <div class="pt-3">
-    <h1 class="h2">Edit Jurusan</h1>
+  <h1 class="h2">Edit Jurusan</h1>
 </div>
 <hr>
 
-<form method="post" action="{{ route('jurusans.update',['jurusan' => $jurusan->id]) }}">
-    @method('PATCH')
-    @include('jurusan.form', ['tombol' => 'Update'])
+<form method="POST"
+  action="{{ route('jurusans.update',['jurusan' => $jurusan->id]) }}">
+  @method('PATCH')
+  @include('jurusan.form',['tombol' => 'Update'])
 </form>
 
 @endsection

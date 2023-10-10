@@ -12,11 +12,13 @@ class Mahasiswa extends Model
     use HasFactory;
     protected $fillable = ['nim','nama','jurusan_id'];
 
-    public function jurusan(): BelongsTo{
+    public function jurusan(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Jurusan');
     }
 
-    public function matakuliahs(): BelongsToMany{
+    public function matakuliahs(): BelongsToMany
+    {
         return $this->belongsToMany('App\Models\Matakuliah')->withTimestamps();
     }
 }

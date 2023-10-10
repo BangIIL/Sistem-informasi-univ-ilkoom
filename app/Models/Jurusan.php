@@ -11,15 +11,18 @@ class Jurusan extends Model
     use HasFactory;
     protected $fillable = ['nama','kepala_jurusan','daya_tampung'];
 
-    public function dosens(): HasMany{
+    public function dosens(): HasMany
+    {
         return $this->hasMany('App\Models\Dosen');
     }
 
-    public function mahasiswas(): HasMany{
+    public function mahasiswas(): HasMany
+    {
         return $this->hasMany('App\Models\Mahasiswa');
     }
 
-    public function matakuliahs(): HasMany{
+    public function matakuliahs(): HasMany
+    {
         return $this->hasMany('App\Models\Matakuliah');
     }
 }

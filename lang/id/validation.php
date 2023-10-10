@@ -22,7 +22,6 @@ return [
         'string'  => ':Attribute harus berisi antara :min sampai :max karakter.',
     ],
     'boolean'              => ':Attribute harus bernilai true atau false',
-    'can'                  => 'Bidang :attribute berisi nilai yang tidak sah.',
     'confirmed'            => 'Konfirmasi :attribute tidak cocok.',
     'current_password'     => 'Kata sandi salah.',
     'date'                 => ':Attribute bukan tanggal yang valid.',
